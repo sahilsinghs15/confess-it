@@ -2,12 +2,28 @@ import dbConnect from "@/lib/dbConnect";
 import UserModel from "@/model/user.model";
 import bcrypt from "bcryptjs";
 import { sendVerificationEmail } from "@/helpers/sendVerificationEmail";
+import {z} from "zod";
+import { usernameValidation } from "@/schemas/signUpSchema";
 
 export async function POST(request : Request){
     await dbConnect();
 
     try{
         const {username , email, password} = await request.json();
+        const UsernameSchema = z.object({
+            username : usernameValidation
+        })
+        const result = UsernameSchema.safeParse({username});
+        const usernameErrors = result.error?.format().username?._errors || [];
+        if(!result.success){
+            return Response.json({
+                success : false,
+                message : usernameErrors?.length > 0 ?
+                usernameErrors.join(', '):
+                "Username is not valid"
+            },{status : 400})
+        }
+        
         const existingUserVerifiedByUsername = await UserModel.findOne({username , isVerified : true}); //we will get the username if it is verified
         if(existingUserVerifiedByUsername){
             return Response.json({

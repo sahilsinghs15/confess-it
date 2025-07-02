@@ -1,12 +1,14 @@
-import {resend} from "@/lib/resend";
+import { Resend } from "resend";
 import VerificationEmail from "../../emails/VerificationEmail";
 import { ApiResponse } from "@/types/ApiResponse";
+
+const resend = new Resend(process.env.RESEND_API_KEY);
 
 export async function sendVerificationEmail(email : string, username : string , verifyCode : string) : Promise<ApiResponse>{
     try{
         await resend.emails.send({
-            from : 'sahilnodemailer15@gmail.com',
             to : email,
+            from : 'onboarding@resend.dev',
             subject : 'ConfessIt Verification code',
             react : VerificationEmail({username , otp : verifyCode}),
         });
