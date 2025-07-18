@@ -19,7 +19,6 @@ export default function RootLayout({
           {children}
           <Toaster/>
         </body>
-
       </AuthProvider>
     </html>
   );

@@ -1,6 +1,6 @@
 import { NextResponse } from 'next/server';
 import { OpenAI } from 'openai';
-
+//have to setup first proper open api model and then have to handle it in frontend using useCompletions hooks to render streaming response.
 const openai = new OpenAI({
   apiKey: process.env.OPENAI_API_KEY!,
 });
