@@ -27,15 +27,18 @@ const Page = () =>{
   })
 
   const onSubmit = async (data : z.infer<typeof signInSchema>)=>{
-    setIsSubmitting(true);
-    const result = await signIn('credentials',{
-        redirect : false,
-        identifier : data.identifier,
-        password : data.password
-    });
+        setIsSubmitting(true);
+        const result = await signIn('credentials',{
+            redirect : false,
+            identifier : data.identifier,
+            password : data.password
+        });
+    console.log(result);
     if(result?.error){
         toast.message("Login failed",{
-            description : "Incorrect username of password"
+            description : result.error.includes("Unexpected token") 
+              ? "Auth API route misconfigured or missing. Check /api/auth/[...nextauth] and NEXTAUTH_URL in .env.local."
+              : "Incorrect username or password"
         })
     }
 

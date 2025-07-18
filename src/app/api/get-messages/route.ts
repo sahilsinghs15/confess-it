@@ -1,4 +1,4 @@
-import { authOptions } from "@/app/auth/[...nextauth]/options";
+import { authOptions } from "@/app/api/auth/[...nextauth]/options";
 import dbConnect from "@/lib/dbConnect";
 import UserModel from "@/model/user.model";
 import mongoose from "mongoose";
